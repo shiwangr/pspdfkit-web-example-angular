@@ -8,17 +8,20 @@ import PSPDFKit from "pspdfkit";
 })
 export class AppComponent {
   title = "PSPDFKit for Web Angular Example";
+  toolbarItemsCustom: any;
 
   ngAfterViewInit(): void {
+    const undoObj = { type: 'undo' };
+    const redoObj = { type: 'redo' };
+    this.toolbarItemsCustom =  PSPDFKit.defaultToolbarItems;
+    this.toolbarItemsCustom.splice(10, 0, undoObj);
+    this.toolbarItemsCustom.splice(11, 0, redoObj);
     PSPDFKit.load({
       baseUrl: location.protocol + "//" + location.host + "/assets/",
       document: "/assets/example.pdf",
       container: ".pspdfkit-container",
+      toolbarItems: this.toolbarItemsCustom
     }).then((instance) => {
-      // For the sake of this demo, store the PSPDFKit for Web instance
-      // on the global object so that you can open the dev tools and
-      // play with the PSPDFKit API.
-
       (<any>window).instance = instance;
     });
   }
